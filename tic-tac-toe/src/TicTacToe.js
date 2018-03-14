@@ -20,6 +20,17 @@ class TicTacToe extends Component {
         this.mark = this.mark.bind(this);
         this.onHome = this.onHome.bind(this);
         this.go = this.go.bind(this);
+        this.displaydata = this.displaydata.bind(this);
+    }
+    displaydata(){
+        var his = JSON.parse(localStorage.getItem("leaderboard1"));
+        let a="";
+        for(let i=0;i<his.length;i++)
+        {
+            a+=`Player:${his[i].player_name}  Wins:${his[i].sc} `;
+        }
+        console.log(a);
+        return a;
     }
     go() {
         browserHistory.push("/Leaderboard");
@@ -62,6 +73,7 @@ class TicTacToe extends Component {
     }
     mark(row_index, col_index) {
         let obj = {};
+        var his=[];
         if (this.state.data[row_index + '' + col_index]) {
             return;
         }
@@ -78,25 +90,49 @@ class TicTacToe extends Component {
         setTimeout(() => {
             if (this.didWin(current_mark)) {
                 if (current_mark === 'X') {
+                    let flag=0;
                     obj.player_name = this.state.val1;
-                    obj.sc = this.state.score.X;
+                    obj.sc = this.state.score.X+1;
                     this.state.history.push(obj);
-                    var his=[];
-                    his.push(obj)
-                    console.log(his);
-                    his = JSON.parse(localStorage.getItem("leaderboard1"));
+                    his = JSON.parse(localStorage.getItem("leaderboard1")) || [];
+                    for(let i=0;i<his.length;i++)
+                    {
+                        if(his[i].player_name===obj.player_name)
+                        {
+                            his[i].sc++;
+                        flag=1;
+                    }
+                    }
+                    if(flag===0)
+                    {
+                        his.push(obj);
+                    }
                     localStorage.setItem("leaderboard1", JSON.stringify(his));
+                    console.log(his);
                     console.log(this.state.history);
                     alert("Congratulations " + this.state.val1 + " you beat " + this.state.val2);
                 } else {
+                    let flag=0;
                     obj.player_name = this.state.val2;
-                    obj.sc = this.state.score.O;
+                    obj.sc = this.state.score.O+1;
                     this.state.history.push(obj);
-                    var his=[];
-                    his.push(obj);
-                    console.log(his);
-                    his = JSON.parse(localStorage.getItem("leaderboard1"));
+                    console.log(flag);
+                    his = JSON.parse(localStorage.getItem("leaderboard1")) || [];
+                    for(let i=0;i<his.length;i++)
+                    {
+                        if(his[i].player_name===obj.player_name)
+                        {
+                            his[i].sc++;
+                        flag=1;
+                    }
+                    }
+                    if(flag===0)
+                    {
+                        his.push(obj);
+                        console.log(flag);
+                    }
                     localStorage.setItem("leaderboard1", JSON.stringify(his));
+                    console.log(his);
                     console.log(this.state.history);
                     alert("Congratulations " + this.state.val2 + " you beat " + this.state.val1);
                 }
@@ -162,7 +198,7 @@ class TicTacToe extends Component {
             Home <
             /button> <
             button id = 'btn1'
-            className = "pull-right btn-primary"
+            className = "pull-right btn btn-primary"
             onClick = { this.emptyAll } >
             New Game <
             /button> < /
@@ -180,7 +216,8 @@ class TicTacToe extends Component {
             value = { this.state.val2 } onChange = { this.handle1 }
             /></p >
             <
-            /p > <
+            /p >
+             <
             hr / >
             <
             Scoreboard score = { this.state.score } v = { this.state.val1 } v1 = { this.state.val2 }
@@ -195,14 +232,15 @@ class TicTacToe extends Component {
             button id = 'btn'
             className = 'btn btn-danger pull-left'
             onClick = { this.empty } >
+          
             Reset <
             /button> <
             button id = 'btn'
             className = 'btn btn-primary pull-right'
-            onClick = { this.empty } >
+            onClick = { this.displaydata } >
             LeaderBoard <
             /button> 
-
+            {this.displaydata}
             <
             /div> < /
             div >

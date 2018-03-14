@@ -20,17 +20,6 @@ class TicTacToe extends Component {
         this.mark = this.mark.bind(this);
         this.onHome = this.onHome.bind(this);
         this.go = this.go.bind(this);
-        this.displaydata = this.displaydata.bind(this);
-    }
-    displaydata(){
-        var his = JSON.parse(localStorage.getItem("leaderboard1"));
-        let a="";
-        for(let i=0;i<his.length;i++)
-        {
-            a+=`Player:${his[i].player_name}  Wins:${his[i].sc} `;
-        }
-        console.log(a);
-        return a;
     }
     go() {
         browserHistory.push("/Leaderboard");
@@ -237,10 +226,9 @@ class TicTacToe extends Component {
             /button> <
             button id = 'btn'
             className = 'btn btn-primary pull-right'
-            onClick = { this.displaydata } >
+            onClick = { this.go } >
             LeaderBoard <
             /button> 
-            {this.displaydata}
             <
             /div> < /
             div >

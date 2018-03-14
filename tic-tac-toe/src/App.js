@@ -14,6 +14,8 @@ class App extends Component {
           </Route>
         <Route path={"Tic Tac Toe"} component={TicTacToe}/>
         <Route path={"/"} component={Home}/>
+        <Route path={"Leaderboard"} component={Leaderboard}/>
+         <Route path={"Tic Tac Toe"} component={TicTacToe}/>
       </Router>
     );
   }
